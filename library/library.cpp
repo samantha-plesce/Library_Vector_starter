@@ -4,6 +4,7 @@
 #include <time.h>
 #include <iostream>
 
+#include "../includes_usr/constants.h"
 #include "../includes_usr/library.h"
 #include "../includes_usr/datastructures.h"
 #include "../includes_usr/fileIO.h"
@@ -17,7 +18,8 @@ using namespace std;
  * clear books and patrons containers
  * then reload them from disk 
  */
-void reloadAllData(){
+void reloadAllData(){\
+	return SUCCESS;
 
 }
 
