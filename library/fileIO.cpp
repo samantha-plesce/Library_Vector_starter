@@ -13,21 +13,29 @@ using namespace std;
  * */
 int loadBooks(vector<book> &books, const char* filename)
 {
+	//http://www.cplusplus.com/forum/beginner/93003/
 	books.clear();
-	file.open(filename.c_str());
-	if (!filename.is_open())
+	ofstream file(filename);
+	file.open(filename.c_str()); //what ios
+	if (!file.is_open())
 	{
 		return COULD_NOT_OPEN_FILE;
 	}
-	if (filename.is_open()){
-		for (int i = 0)
-			file << books[i] << endl;
+	if (file.is_open())
+	{
+		cout << "file opened successfully" << endl;
+		if (file.good()){
+			//for each element in the vector
+			for (i=0; i < books.size(); i++0)
+			{
+				if books == 0
+						return NO_BOOKS_IN_LIBRARY;
+				else
+					return SUCCESS;
+			}
 		}
-		if books == 0;
-		return NO_BOOKS_IN_LIBRARY;
 	}
 	file.close();
-	return SUCCESS;
 }
 
 /* serializes books to the file filename
@@ -44,6 +52,9 @@ int saveBooks(std::vector<book> &books, const char* filename)
 	}
 	os.write((char*)&books, sizeof(books));
 	os.close();
+	//reading from it
+	ifstream is(filename, ios::binary);
+	if
 	return SUCCESS;
 }
 
