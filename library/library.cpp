@@ -3,7 +3,7 @@
 #include <algorithm>
 #include <time.h>
 #include <iostream>
-
+#include "fileIO.cpp"
 #include "../includes_usr/constants.h"
 #include "../includes_usr/library.h"
 #include "../includes_usr/datastructures.h"
@@ -18,8 +18,12 @@ using namespace std;
  * clear books and patrons containers
  * then reload them from disk 
  */
-void reloadAllData(){\
-	return SUCCESS;
+void reloadAllData(){
+	loadBooks();
+	loadPatrons();
+	saveBooks();
+	savePatrons();
+	return books, patrons;
 
 }
 
@@ -44,6 +48,20 @@ void reloadAllData(){\
  *         TOO_MANY_OUT patron has the max number of books allowed checked out
  */
 int checkout(int bookid, int patronid){
+	loadBooks();
+	loadPatrons();
+
+	if (!patronid == patron.patron_id){return PATRON_NOT_ENROLLED};
+	if (!bookid == book.book_id) {return BOOK_NOT_IN_COLLECTION};
+	if (patron.number_books_checked_out >= MAX_BOOKS_ALLOWED_OUT) {return TOO_MANY_OUT};
+
+	if (patron.number_books_checked_out < MAX_BOOKS_ALLOWED_OUT){
+		book.loaned_to_patron_id = patronid;
+		book.state = OUT;
+	}
+	saveBooks();
+	savePatrons();
+
 	return SUCCESS;
 }
 
