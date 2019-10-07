@@ -2,9 +2,11 @@
 #include "../includes_usr/constants.h"
 #include <fstream>
 #include <sstream>
+#include <string>
 #include <cstring>
 #include <iostream>
 #include <fstream>
+#include <vector>
 using namespace std;
 /* clears, then loads books from the file filename
  * returns  COULD_NOT_OPEN_FILE if cannot open filename
@@ -13,28 +15,33 @@ using namespace std;
  * */
 int loadBooks(vector<book> &books, const char* filename)
 {
-	//http://www.cplusplus.com/forum/beginner/93003/
 	books.clear();
-	ofstream file(filename);
-	file.open(filename.c_str()); //what ios
-	if (!file.is_open())
-	{
-		return COULD_NOT_OPEN_FILE;
+	ifstream file;
+	file.open(filename, ios::in);
+	if (!file.is_open()) {return COULD_NOT_OPEN_FILE;}
+
+	string line = "";
+	while (getline(file,line)){
+		book booki;
+		string title, author, b_id, patron_num;
+		int convert = 0;
+
+		stringstream ss(line);
+
+		getline(ss, title, ',');
+		booki.title = title;
+		getline(ss, author, ',');
+		booki.author = author;
+		getline(ss, b_id, ',');
+		booki.book_id = convert;
+		getline(ss, patron_num, ',');
+		booki.loaned_to_patron_id = convert;
+
+		books.push_back(booki);
+
 	}
-	if (file.is_open())
-	{
-		cout << "file opened successfully" << endl;
-		if (file.good()){
-			//for each element in the vector
-			for (i=0; i < books.size(); i++0)
-			{
-				if books == 0
-						return NO_BOOKS_IN_LIBRARY;
-				else
-					return SUCCESS;
-			}
-		}
-	}
+	if (books.empty()) {return NO_BOOKS_IN_LIBRARY;}
+	else {return SUCCESS;}
 	file.close();
 }
 
@@ -45,17 +52,34 @@ int loadBooks(vector<book> &books, const char* filename)
  * */
 int saveBooks(std::vector<book> &books, const char* filename)
 {
-	fstream os(filename, ios:binary);
-	if(!os.is_open()){
-		cout << "error opening filename for write"<<endl; //delete later, https://cboard.cprogramming.com/cplusplus-programming/143556-serializing-vector.html
-		return COULD_NOT_OPEN_FILE;
+	books.clear();
+	ifstream file;
+	file.open(filename, ios::in);
+	if (!file.is_open()) {return COULD_NOT_OPEN_FILE;}
+
+	string line = "";
+	while (getline(file,line)){
+		book booki;
+		string title, author, b_id, patron_num;
+		int convert = 0;
+
+		stringstream ss(line);
+
+		getline(ss, title, ',');
+		booki.title = title;
+		getline(ss, author, ',');
+		booki.author = author;
+		getline(ss, b_id, ',');
+		booki.book_id = convert;
+		getline(ss, patron_num, ',');
+		booki.loaned_to_patron_id = convert;
+
+		//file << title, author, b_id, patron_num >> endl;
+
 	}
-	os.write((char*)&books, sizeof(books));
-	os.close();
-	//reading from it
-	ifstream is(filename, ios::binary);
-	if
-	return SUCCESS;
+	if (books.empty()) {return NO_BOOKS_IN_LIBRARY;}
+	else {return SUCCESS;}
+	file.close();
 }
 
 /* clears, then loads patrons from the file filename
@@ -65,8 +89,34 @@ int saveBooks(std::vector<book> &books, const char* filename)
  * */
 int loadPatrons(std::vector<patron> &patrons, const char* filename)
 {
-	return SUCCESS;
+	patrons.clear();
+	ifstream file;
+	file.open(filename, ios::in);
+	if (!file.is_open()) {return COULD_NOT_OPEN_FILE;}
+
+	string line = "";
+	while (getline(file,line)){
+		patron patroni;
+		string pat_id, name, num_b_out;
+		int convert = 0;
+
+		stringstream ss(line);
+
+		getline(ss, pat_id, ',');
+		patroni.patron_id = convert;
+		getline(ss, name, ',');
+		patroni.name = name;
+		getline(ss, num_b_out, ',');
+		patroni.number_books_checked_out = convert;
+
+		patrons.push_back(patroni);
+
+	}
+	if (patrons.empty()) {return NO_PATRONS_IN_LIBRARY;}
+	else {return SUCCESS;}
+	file.close();
 }
+
 
 /* serializes patrons to the file filename
  * returns  COULD_NOT_OPEN_FILE if cannot open filename
@@ -75,5 +125,31 @@ int loadPatrons(std::vector<patron> &patrons, const char* filename)
  * */
 int savePatrons(std::vector<patron> &patrons, const char* filename)
 {
-	return SUCCESS;
+	patrons.clear();
+	ifstream file;
+	file.open(filename, ios::in);
+	if (!file.is_open()) {return COULD_NOT_OPEN_FILE;}
+
+	string line = "";
+	while (getline(file,line)){
+		patron patroni;
+		string pat_id, name, num_b_out;
+		int convert = 0;
+
+		stringstream ss(line);
+
+		getline(ss, pat_id, ',');
+		patroni.patron_id = convert;
+		getline(ss, name, ',');
+		patroni.name = name;
+		getline(ss, num_b_out, ',');
+		patroni.number_books_checked_out = convert;
+
+		//file << pat_id, name, num_b_out;
+
+	}
+	if (patrons.empty()) {return NO_PATRONS_IN_LIBRARY;}
+	else {return SUCCESS;}
+	file.close();
 }
+
