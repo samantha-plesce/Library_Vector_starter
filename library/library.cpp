@@ -3,7 +3,7 @@
 #include <algorithm>
 #include <time.h>
 #include <iostream>
-#include "fileIO.cpp"
+#include "../library/fileIO.cpp"
 #include "../includes_usr/constants.h"
 #include "../includes_usr/library.h"
 #include "../includes_usr/datastructures.h"
@@ -78,6 +78,18 @@ int checkout(int bookid, int patronid){
  * 		   BOOK_NOT_IN_COLLECTION
  */
 int checkin(int bookid){
+	loadBooks();
+	loadPatrons();
+
+	if (!bookid == book.book_id) {return BOOK_NOT_IN_COLLECTION};
+	if (bookid == book.book_id){
+		patron.number_books_checked_out -= 1;
+		book.loaned_to_patron_id = NO_ONE;
+		book.state = IN;
+	}
+	saveBooks();
+	savePatrons();
+
 	return SUCCESS;
 }
 
@@ -91,7 +103,19 @@ int checkin(int bookid){
  *    the patron_id of the person added
  */
 int enroll(std::string &name){
-	return 0;
+	loadBooks();
+	loadPatrons();
+	patron new_patron;
+	new_patron.patron_id = nextPatronID;
+	new_patron.name = name;
+	new_patron.number_books_checked_out = 0;
+
+	patrons.push_back(new_patron);
+
+	saveBooks();
+	savePatrons();
+
+	return new_patron.patron_id;
 }
 
 /*
@@ -100,7 +124,8 @@ int enroll(std::string &name){
  * 
  */
 int numbBooks(){
-	return 0;
+	loadBooks();
+	return books.size();
 }
 
 /*
@@ -108,7 +133,8 @@ int numbBooks(){
  * (ie. if 3 patrons returns 3)
  */
 int numbPatrons(){
-	return 0;
+	loadPatrons();
+	return patrons.size();
 }
 
 /*the number of books patron has checked out
@@ -117,7 +143,8 @@ int numbPatrons(){
  *        or PATRON_NOT_ENROLLED         
  */
 int howmanybooksdoesPatronHaveCheckedOut(int patronid){
-	return 0;
+	loadPatrons();
+	return patron[patronid].number_books_checked_out;
 }
 
 /* search through patrons container to see if patronid is there
